@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include 'user_management_header.html' %}
+  <body>
+    <div class="page exam">
+      <header class="header p-3 position-relative bg-white">
+        <div class="container d-flex align-items-center">
+          <img
+            src="https://i.ibb.co/48bBCk1/logo.png"
+            style="max-width: 60px"
+            alt="Django App"
+            class="site-logo"
+          />
+        </div>
+      </header>
+
+      <main class="main login container mt-4">
+        <div class="row g-0">
+          <div class="col col-xl-4 mx-auto">
+            <div class="content">
+              <div class="card border-0">
+                <div class="card-body p-0">
+                  <h1 class="h2 fw-bold mb-4">Login to your account</h1>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                      <label for="inputEmail" class="form-label">Email</label>
+                      <input
+                        type="email"
+                        pattern='^(([^()\[\]\\.,;:\s@"]+(\.[^()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+                        name="email"
+                        class="form-control"
+                        id="inputEmail"
+                        placeholder="example@gmail.com"
+                        required
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <label for="inputPassword" class="form-label"
+                        >Password</label
+                      >
+                      <div class="position-relative">
+                        <input
+                          type="password"
+                          name="password"
+                          class="form-control"
+                          id="inputPassword"
+                          placeholder="password"
+                          required
+                          style="padding-right: 3rem"
+                        />
+                        <i
+                          class="fa fa-eye togglePassword position-absolute top-50 start-100 translate-middle"
+                          style="padding-right: 3rem"
+                          id="togglePassword"
+                        ></i>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                      <button
+                        type="button"
+                        class="btn btn-link btn-forgot-pass p-0"
+                        id="forgot-pass-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#forgotPassModal"
+                      >
+                        Forgot Password?
+                      </button>
+                    </div>
+                    <button type="submit" class="btn btn-primary d-block w-100">
+                      Login now
+                    </button>
+                  </form>
+
+                  <p
+                    class="flex-nowrap text-signup mt-4 mb-0 alert-danger d-none"
+                  >
+                    Error
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Forgot Password Modal -->
+        <div
+          class="modal fade forgot-pass"
+          id="forgotPassModal"
+          tabindex="-1"
+          aria-labelledby="forgotPassModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content py-5 px-4">
+              <h3 class="modal-title mb-3" id="forgotPassModalLabel">
+                Forgot your password?
+              </h3>
+              <p class="text-midnight mb-4">
+                Please enter the email address you'd like your password reset
+                information sent to
+              </p>
+              <form id="resetPasswordForm">
+                <div class="mb-3">
+                  <label for="inputPassEmail" class="form-label"
+                    >Enter email address</label
+                  >
+                  <input
+                    type="email"
+                    name="email"
+                    class="form-control validate-box"
+                    id="inputPassEmail"
+                    required
+                  />
+                  <br />
+                </div>
+
+                <div id="alertPlaceholder"></div>
+                <button
+                  type="submit"
+                  class="btn btn-primary d-block w-100 mb-3"
+                  id="requestButton"
+                >
+                  Request reset link
+                </button>
+              </form>
+              <button
+                type="button"
+                class="btn btn-link btn-back text-chambray fw-bolder"
+                data-bs-dismiss="modal"
+              >
+                Back to Login
+              </button>
+              <div
+                class="alert"
+                id="notification-forget"
+                style="display: none"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+      integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+      integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+      crossorigin="anonymous"
+    ></script>
+
+
+    <script>
+      $(document).ready(function () {
+        $('#resetPasswordForm').on('submit', function(e){
+          e.preventDefault()
+        is_valid = validate();
+        if (is_valid == true){
+          $("#loader").removeClass("d-none");
+          $("#loader").addClass("d-flex");
+          $.ajax({
+            method:'POST',
+            url: "{% url 'user_management:forgot-password' %}",
+            headers: {"X-CSRFToken": "{{csrf_token}}"},
+            data:{
+              email:$('#inputPassEmail').val()
+            },
+            success: function(data){
+                if (!data.status){
+                  $("#loader").removeClass("d-flex");
+                  $("#loader").addClass("d-none");
+                  msg = data.message
+                  status = "danger"
+                  app_alert(msg, status);
+                }
+                else{
+                  msg = data.message
+                  status = "success"
+                  app_alert(msg, status);
+                  $("#loader").removeClass("d-flex");
+                  $("#loader").addClass("d-none");
+                }
+            },
+        });
+        }else {
+          msg = "Please enter a valid email address."
+          status = "danger"
+          app_alert(msg, status);
+        }
+        });
+      });
+
+      $("#forgot-pass-btn").click(function () {
+        $('#resetPasswordForm').trigger("reset");
+      });
+
+      const validateEmail = (email) => {
+        return String(email)
+          .toLowerCase()
+          .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          );
+      };
+
+      const validate = () => {
+        const email = $("#inputPassEmail").val();
+    
+        if (validateEmail(email)) {
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      function app_alert(message, type) {
+        $('#notification-forget').text(message);
+        $('#notification-forget').removeClass();
+        $('#notification-forget').addClass('alert alert-'+type);
+        $('#notification-forget').show()
+        setTimeout(()=>{
+          $('#notification-forget').hide()
+          },3000);
+      }
+
+      const togglePassword = document.querySelector('#togglePassword');
+      const password = document.querySelector('#inputPassword');
+
+      togglePassword.addEventListener('click', function (e) {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    </script>
+  </body>
+</html>

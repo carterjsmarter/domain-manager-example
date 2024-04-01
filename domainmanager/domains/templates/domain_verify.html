@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>   
+
+    <style>
+        .navbar{
+            padding: 0;
+        }
+        .nav-link {
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: capitalize;
+            letter-spacing: -0.5px;
+        }
+        .dropdown-item{
+            font-weight: 500;
+        }
+        .verify-sec label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .verify-sec label span {
+            font-size: 26px;
+            font-weight: 700;
+            display: block;
+            margin-right: 10px;
+        }
+        .verify-sec label input[type="text"] {
+            max-width: 50%;
+            width: 100%;
+            margin-right: 20px;
+            height: 46px;
+            border-radius: 0;
+            border: 1px solid #a5a5a5;
+            padding:10px;
+            background: #a5a5a5;
+            color: #fff;
+        }
+        .verify-sec label input[type="text"]::placeholder{
+            color: #fff;
+        }
+        .verify-sec label input[type="text"]:focus, 
+        .verify-sec label input[type="text"]:visited, 
+        .verify-sec label input[type="text"]:focus-visible{
+            border: 1px solid #787878;
+            box-shadow: none;
+        }
+        .verify-sec label input[type=submit] {
+            border: 1px solid #5b9bd5;
+            padding: 10px 20px;
+            background: #5b9bd5;
+            color: #fff;
+            text-transform: capitalize;
+            font-weight: 600;
+            text-align: center;
+            min-width:180px;
+        }
+        .verify-sec p {
+            font-size: 20px;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 60px;
+        }
+        .verify-sec p span {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        @media screen and (min-width:992px) {
+            .nav-item:first-child a.nav-link {
+                border: 1px solid #5b9bd5;
+                padding: 10px 20px;
+                background: #5b9bd5;
+                color: #fff;
+                margin-right: 20px;
+            }
+        }
+    </style>
+
+    <header class="header bg-white pt-3">
+        <div class="container">
+            <div class="row">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <div class="container-fluid container-fluid p-0">
+                      <a class="navbar-brand" href="index.html"><img src="https://i.ibb.co/48bBCk1/logo.png"  style="max-width: 80px;" alt="Django App logo" class="site-logo" /></a>
+                      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                      </button>
+                      <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                          <li class="nav-item">
+                            <a class="nav-link" href="add_domain.html">Add Domain</a>
+                          </li>
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Menu
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                              <li><a class="dropdown-item" href="#">Domain Names</a></li>
+                              <li><a class="dropdown-item" href="#">Account</a></li>
+                              <li><a class="dropdown-item" href="#">User Management</a></li>
+                              <li><a class="dropdown-item" href="#">Support</a></li>
+                              <li><a class="dropdown-item" href="#">Logout</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+
+    <main>
+        <section class="verify-sec pt-5 mt-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-sm-8">
+                        <p>
+                            In order to complete this process, copy your existing SPF from <span>&#12296;</span>domainname<span>&#12297;</span> to 
+                                subdomain <span>&#12296;</span>source_prefix<span>&#12297;</span>. <span>&#12296;</span>domainname<span>&#12297;</span> and click ‘verify domain’
+                                    <br>
+                                This will be the source of truth for your SPF record moving forward.                                
+                        </p>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="">
+                            <input type="text" name="domain" placeholder="_3ed4r.Abc.com">
+                            <input type="submit" name="submit" id="submit" value="Verify Domain">
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+</body>
+</html>

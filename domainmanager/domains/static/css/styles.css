@@ -1,0 +1,287 @@
+/* DASHBOARD PAGE CSS */
+a{
+    text-decoration: none !important;
+}
+.navbar{
+    padding: 0;
+}
+.navbar-toggler{
+    border: none;
+}
+.navbar-collapse{
+    padding:0 20px;
+}
+.navbar-toggler:focus{
+    box-shadow: none;
+    outline: 0;
+    border: none;
+}
+/* .light-blue{
+    background-color: #d2deef;
+} */
+.dark-blue{
+    background-color: #5b9bd5;
+}
+/* .light-gray{
+    background-color: #eaeff7;
+} */
+.table>tbody>tr:nth-child(odd){
+    background-color: #d2deef;
+}
+.table>tbody>tr{
+    background-color: #eaeff7;
+}
+.table tbody tr th, .table tbody tr td, .table thead tr th{
+    padding: 15px 10px;
+}
+.table thead tr th{
+    font-size: 18px;
+    color: #fff;
+}
+.table tbody tr th{
+    font-size: 16px;
+}
+.table tbody tr td{
+    font-size: 16px;
+}
+.table-bordered>:not(caption)>*, .table-bordered>:not(caption)>*>*{
+    border-width: 3px 3px;
+    border-color: #fff;
+}
+.nav-link {
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: -0.5px;
+}
+.dropdown-item{
+    font-weight: 500;
+}
+.warning_modal{
+    display: none;
+    position: fixed;
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; 
+    overflow: auto;
+    background-color: #000000b3;
+    padding-top: 50px;
+}
+.inner_content {
+    max-width: 30%;
+    margin: auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 4px;
+}
+.inner_content h1{
+    font-size: 28px;
+}
+.inner_content button.cancelbtn {
+    border: 1px solid #5b9bd5;
+    padding: 4px 10px;
+    background: #5b9bd5;
+    color: #fff;
+}
+.inner_content button.deletebtn {
+    border: 1px solid #f91100;
+    padding: 4px 10px;
+    background: #f91100;
+    color: #fff;
+    margin-right: 10px;
+}
+.table tr td a, .table tr td button {
+    border: 1px solid #5b9bd5;
+    padding: 4px 10px;
+    background: #5b9bd5;
+    color: #fff;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+.table tr td a:hover, .table tr td button:hover {
+    color: #000;
+}
+/* ADD DOMAIN PAGE CSS */
+.domain-sec label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+        .domain-sec label span {
+    font-size: 26px;
+    font-weight: 700;
+    display: block;
+    margin-right: 10px;
+}
+.domain-sec label input[type="text"] {
+    max-width: 50%;
+    width: 100%;
+    margin-right: 20px;
+    height: 46px;
+    border-radius: 0;
+    border: 1px solid #787878;
+    padding:10px;
+}
+.domain-sec label input[type="text"]:focus, 
+.domain-sec label input[type="text"]:visited, 
+.domain-sec label input[type="text"]:focus-visible{
+    border: 1px solid #787878;
+    box-shadow: none;
+}
+.domain-sec label input[type=submit] {
+    border: 1px solid #5b9bd5;
+    padding: 10px 20px;
+    background: #5b9bd5;
+    color: #fff;
+    text-transform: capitalize;
+    font-weight: 600;
+    text-align: center;
+    min-width:180px;
+}
+.domain-btn{    
+    border: 1px solid #5b9bd5;
+    padding: 10px 20px;
+    background: #5b9bd5;
+    color: #fff;
+    text-transform: capitalize;
+    font-weight: 600;
+    text-align: center;
+    min-width:180px;
+}
+.domain-btn:hover{
+    color: rgba(0,0,0,.7);
+}
+.verify-sec label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.verify-sec label span {
+    font-size: 26px;
+    font-weight: 700;
+    display: block;
+    margin-right: 10px;
+}
+.verify-sec label input[type="text"] {
+    max-width: 60%;
+    width: 100%;
+    margin-right: 20px;
+    height: 46px;
+    border-radius: 0;
+    border: 1px solid #a5a5a5;
+    padding:10px;
+    background: #a5a5a5;
+    color: #fff;
+}
+.verify-sec label input[type="text"]::placeholder{
+    color: #fff;
+}
+.verify-sec label input[type="text"]:focus, 
+.verify-sec label input[type="text"]:visited, 
+.verify-sec label input[type="text"]:focus-visible{
+    border: 1px solid #787878;
+    box-shadow: none;
+}
+.verify-sec label .submit {
+    border: 1px solid #5b9bd5;
+    padding: 10px;
+    background: #5b9bd5;
+    color: #fff;
+    text-transform: capitalize;
+    font-weight: 600;
+    text-align: center;
+    min-width: 120px;
+}
+.verify-sec p {
+    font-size: 18px;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+.verify-sec p span {
+    font-size: 16px;
+    font-weight: 600;
+}
+.btn-close {
+    margin: 0 0 0 auto;
+    width: 2em;
+    height: 2em;
+}
+.verify-sec {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-width: 50%;
+    margin: auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 4px;
+}
+
+.verify-sec button.btn-close {
+    float: right;
+    position: relative;
+    top: -30px;
+    right: -30px;
+}
+.modal-body{
+    padding-bottom: 36px;
+}
+/* Resetpassword CSS */
+.reset-password .card-body i {
+    transform: translate(-100%, -50%) !important;
+    padding-right: 10px;
+}
+.btn-primary{
+    border: 1px solid #5b9bd5;
+    padding: 10px 20px;
+    background: #5b9bd5;
+    color: #fff;   
+}
+.navbar-nav>.nav-item:last-child>a.nav-link{
+    margin-right: 0;
+}
+@media screen and (min-width:992px) {
+    .navbar-nav>.nav-item>a.nav-link {
+        border: 1px solid #5b9bd5;
+        padding: 10px 20px;
+        background: #5b9bd5;
+        color: #fff;
+        margin-right: 20px;
+    }
+    .navbar-nav>.dropdown>ul {
+        background: #5b9bd5;
+        border-radius: 0;
+    }
+    .navbar-nav>.dropdown>ul>li>a {
+        color: #fff;
+    }
+    .navbar-nav>.dropdown>ul>li>a:hover{
+        background: #84c3fd;
+    }
+}
+@media screen and (max-width:767px){
+    .domain-sec label span, .domain-sec label input[type="text"]{
+        margin-right: 0;
+    }
+    .domain-sec label input[type="text"]{
+        max-width: 100%;
+        margin: 10px 0 20px;
+    }
+    .domain-sec label{
+        display: block;
+        text-align: center;
+    }    
+    .verify-sec label {
+        display: block;
+        text-align: center;
+    }
+    .verify-sec label input{
+        margin-bottom: 20px;
+    }
+    .modal .modal-dialog{
+        margin-top: 30px;
+    }
+}

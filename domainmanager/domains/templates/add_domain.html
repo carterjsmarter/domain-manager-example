@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block body %}
+{% include 'header.html' %}
+
+<main>
+  <section class="domain-sec pt-5 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+            {% csrf_token %}
+            <label>
+              <span>Domain Name</span>
+              <input type="text" id="domain-name" name="domain" required/>
+              <a type="button" id="add-domain-btn" class="domain-btn">add domain</a>
+            </label>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+<!-- Warning Modal -->
+<div id="verify_modal" class="warning_modal">
+  <div class="verify-sec">
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="document.getElementById('verify_modal').style.display='none'"></button>
+      <div class="container-fluid p-0">
+          <div class="row justify-content-center">
+              <div id="verify-modal-div" class="col-sm-12"></div>
+              <div class="col-sm-12">
+                <p>This will be the source of truth for your SPF record moving forward.</p>
+              </div>
+              <div class="col-sm-12">
+                  <label for="">
+                      <input type="text" id="verify-domain-input" name="domain" placeholder="_3ed4r.Abc.com" value="">
+                      <a type="submit" name="submit" class="submit" id="add-verify-domain">Verify Domain</a>
+                  </label>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Warning Modal End -->
+
+<script>
+    $(document).ready(function () {
+        $("#add-domain-btn").on("click", function (e) {
+          e.preventDefault();
+          var domain_name = $('#domain-name').val();
+          if (!domain_name){
+            alert("Domain name field can't be empty");
+          }
+          else{
+            $.ajax({
+              method: "POST",
+              url: "{% url 'domains:add-domain' %}",
+              data: {
+                domain_name: $('#domain-name').val(),
+                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+              },
+              success: function (data) {
+                if (data.status == true) {
+                  var domain = data.domain;
+                  var domain_name = data.domain_name;
+                  var source_prefix = data.source_prefix;
+                  document.getElementById('verify_modal').style.display='block';
+                  $('#verify-domain-input').val(data.domain);
+                  var verify_modal_div = $('#verify-modal-div');
+                  var paragraph = document.createElement("p");
+                  paragraph.textContent = `In order to complete this process, copy your existing SPF from ${domain_name} to 
+                  subdomain ${source_prefix}.${domain_name} and click ‘verify domain’`;
+                  verify_modal_div.append(paragraph);
+                } else if (data.status == false) {
+                  alert(data.message);
+                  window.location.href = "{% url 'domains:dashboard' %}";
+                }
+              },
+            });
+        }
+        });
+
+        $("#add-verify-domain").on("click", function (e) {
+          e.preventDefault();
+          $.ajax({
+            method: "POST",
+            url: "{% url 'domains:verify-domain' %}",
+            data: {
+              is_verify_page: 'True',
+              domain_to_verify: $('#verify-domain-input').val(),
+              csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+            },
+            success: function (data) {
+              if (data.status == true) {
+                alert(data.message);
+                window.location.href = "{% url 'domains:dashboard' %}";
+              } else if (data.status == false) {
+                alert(data.message);
+                window.location.href = "{% url 'domains:dashboard' %}";
+              }
+            },
+          });
+        });
+
+      });
+</script>
+
+{% endblock body %}

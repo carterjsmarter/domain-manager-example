@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% block body %}
+{% include 'header.html' %}
+
+<main>
+  {% csrf_token %}
+  <section class="table-sec pt-5 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <table class="table pt-5 table-bordered">
+                    <thead>
+                    <tr class="dark-blue">
+                        <th scope="col">Domain</th>
+                        <th scope="col">Source Prefix</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="light-blue">
+                        {% for domain in domains %}
+                        <td>{{ domain.domain_name }}</td>
+                        <td>{{ domain.source_prefix }}</td>
+                        {% if domain.get_status_display == 'Verified' or domain.get_status_display == 'Enabled' %}
+                        <td>Active</td>
+                        {% else %}
+                        <td>{{domain.get_status_display}}</td>
+                        {% endif %}
+                        {% if domain.get_status_display == 'Verified' %}
+                        <td>
+                        <button type="button" class="disable-domain" data-domainid="{{domain.domain_id}}">Disable</button>
+                        <a
+                            href="javascript:void(0)"
+                            id="{{domain.domain_id}}"
+                            type="button"
+                            class="dlt-btn"
+                            data-domainid="{{domain.domain_id}}"
+                            onclick="deleteFunc('{{domain.domain_id}}')"
+                            >Delete</a
+                        >
+                        </td>
+                        {% endif %} {% if domain.get_status_display == 'Pending' %}
+                        <td>
+                        <a
+                            href="#"
+                            id="{{domain.domain_id}}"
+                            class="verify-btn"
+                            type="button"
+                            data-domainid="{{domain.domain_id}}"
+                            >Verify</a
+                        >
+                        <a
+                            href="#"
+                            id="{{domain.domain_id}}"
+                            type="button"
+                            class="dlt-btn"
+                            data-domainid="{{domain.domain_id}}"
+                            onclick="deleteFunc('{{domain.domain_id}}')"
+                            >Delete</a
+                        >
+                        </td>
+                        {% endif %} {% if domain.get_status_display == 'Disabled' %}
+                        <td>
+                        <button type="button" class="enable-domain" data-domainid="{{domain.domain_id}}">Enable</button>
+                        <a
+                            href="#"
+                            id="{{domain.domain_id}}"
+                            type="button"
+                            class="dlt-btn"
+                            data-domainid="{{domain.domain_id}}"
+                            onclick="deleteFunc('{{domain.domain_id}}')"
+                            >Delete</a
+                        >
+                        </td>
+
+                        {% endif %} {% if domain.get_status_display == 'Enabled' %}
+                        <td>
+                          <button type="button" class="disable-domain" data-domainid="{{domain.domain_id}}">Disable</button>
+                        <a
+                            href="#"
+                            id="{{domain.domain_id}}"
+                            type="button"
+                            class="dlt-btn"
+                            data-domainid="{{domain.domain_id}}"
+                            onclick="deleteFunc('{{domain.domain_id}}')"
+                            >Delete</a
+                        >
+                        </td>
+
+                        {% endif %} {% if domain.get_status_display == 'Deleted' %}
+                        <td></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Warning Modal -->
+<div id="warning_modal" class="warning_modal">
+    <div class="inner_content">
+        <h1>Warning</h1>
+        <p>if domain is deleted, the SPF record will no longer respond</p>
+        <div class="clearfix">
+            <button type="button" id="delete-btn" class="deletebtn">Delete</button>
+            <button type="button" onclick="document.getElementById('warning_modal').style.display='none'" class="cancelbtn">Cancel</button>
+        </div>
+    </div>
+</div>
+<!-- Warning Modal End -->
+
+<script>
+    var global_domain_id = ""
+
+    function deleteFunc(domain_id){
+        global_domain_id = domain_id;
+        document.getElementById('warning_modal').style.display='block';
+    }
+
+  $(document).ready(function () {
+    $(".verify-btn").on("click", function (e) {
+      e.preventDefault();
+      $.ajax({
+        method: "POST",
+        url: "{% url 'domains:verify-domain' %}",
+        data: {
+          is_verify_page: 'False',
+          domain_id: $(this).attr("data-domainid"),
+          csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+        },
+        success: function (data) {
+          if (data.status == true) {
+            alert("domain successfully verified");
+            window.location.href = "{% url 'domains:dashboard' %}";
+          } else if (data.status == false) {
+            alert(data.message);
+          }
+        },
+      });
+    });
+  });
+
+  $(document).ready(function () {
+    $("#delete-btn").on("click", function (e) {
+      e.preventDefault();
+      $.ajax({
+        method: "POST",
+        url: "{% url 'domains:delete-domain' %}",
+        headers: { "X-CSRFToken": "{{ csrf_token }}" },
+        data: {
+          is_disable: 'False',
+          is_enable: 'False',
+          domain_id: global_domain_id,
+        },
+        success: function (data) {
+          if (data.status == true) {
+            window.location.href = "{% url 'domains:dashboard' %}";
+          } else if (data.status == false) {
+            alert(data.message);
+          }
+        },
+      });
+    });
+
+    $(".disable-domain").on("click", function (e) {
+      var id = $(this).attr("data-domainid");
+      console.log("domain_id: ", id);
+      e.preventDefault();
+      $.ajax({
+        method: "POST",
+        url: "{% url 'domains:delete-domain' %}",
+        headers: { "X-CSRFToken": "{{ csrf_token }}" },
+        data: {
+          is_disable: 'True',
+          is_enable: 'False',
+          domain_id: $(this).attr("data-domainid"),
+        },
+        success: function (data) {
+          if (data.status == true) {
+            alert(data.message);
+            window.location.href = "{% url 'domains:dashboard' %}";
+          } else if (data.status == false) {
+            alert(data.message);
+          }
+        },
+      });
+    });
+
+    $(".enable-domain").on("click", function (e) {
+      e.preventDefault();
+      $.ajax({
+        method: "POST",
+        url: "{% url 'domains:delete-domain' %}",
+        headers: { "X-CSRFToken": "{{ csrf_token }}" },
+        data: {
+          is_enable: 'True',
+          is_disable: 'False',
+          domain_id: $(this).attr("data-domainid"),
+        },
+        success: function (data) {
+          if (data.status == true) {
+            alert(data.message);
+            window.location.href = "{% url 'domains:dashboard' %}";
+          } else if (data.status == false) {
+            alert(data.message);
+          }
+        },
+      });
+    });
+
+  });
+</script>
+
+{% endblock body %}
